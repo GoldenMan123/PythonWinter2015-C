@@ -2,13 +2,12 @@ cimport woexp
 
 __doc__ = 'Primitive wordexp.h wrapper'
 
-cpdef enum:
-    WRDE_DOOFFS = (1 << 0)	#  Insert PWORDEXP->we_offs NULLs.
-    WRDE_APPEND = (1 << 1)	#  Append to results of a previous call.
-    WRDE_NOCMD = (1 << 2)	#  Don't do command substitution.
-    WRDE_REUSE = (1 << 3)	#  Reuse storage in PWORDEXP.
-    WRDE_SHOWERR = (1 << 4)	#  Don't redirect stderr to /dev/null.
-    WRDE_UNDEF = (1 << 5)	#  Error for expanding undefined variables.
+WRDE_DOOFFS = (1 << 0)	#  Insert PWORDEXP->we_offs NULLs.
+WRDE_APPEND = (1 << 1)	#  Append to results of a previous call.
+WRDE_NOCMD = (1 << 2)	#  Don't do command substitution.
+WRDE_REUSE = (1 << 3)	#  Reuse storage in PWORDEXP.
+WRDE_SHOWERR = (1 << 4)	#  Don't redirect stderr to /dev/null.
+WRDE_UNDEF = (1 << 5)	#  Error for expanding undefined variables.
 
 cdef class WordExp:
     'wordexp.h wrapper class'
@@ -23,6 +22,7 @@ cdef class WordExp:
 
     def expand(self, char *s, int flags=WRDE_REUSE):
         '''expand(s, flags=WRDE_REUSE)\n\nPerform wordexp(s, self.data, flags)'''
+        woexp.wordfree(&self.data)
         if woexp.wordexp(s, &self.data, flags):
             raise MemoryError("Cannot perform expansion")
 

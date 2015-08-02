@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
     for (i = 4; i < argc; ++i) {
         tmp = PyString_FromString(argv[i]);
         PyList_Append(list, tmp);
-        //Py_CLEAR(tmp);
+        Py_CLEAR(tmp);
     }
     sliced = PyList_GetSlice(list, s, e);
     repeated = PySequence_Repeat(sliced, r);
